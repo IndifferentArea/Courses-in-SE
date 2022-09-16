@@ -1,0 +1,131 @@
+\documentclass[11pt, oneside]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, fancyhdr}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \bfseries,          % 关键字风格
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格, 斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么, 加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格, 显示了有点乱, 所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式, 小五号, tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置, t指的是top上面
+    frame               =   lrtb,   % 显示边框
+}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{1} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT410911: Software Quality Assurance}
+\def\simCourseName{SQA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\date{\today}
+
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's work.}
+
+\section*{BUG collection and reflect}
+
+\subsection*{BUG1. Complier Output}
+
+\subsubsection*{1.1 bug itself}
+
+    Yesterday I found a weird phenomenon that Latex worship, an extension on VScode to help with latex code, didn't compile the current file 
+    as usual maybe just after I initiate a git repository. 
+    
+    I thought there maybe something wrong in the hash table where file 
+    indexes, so I tried reinstall the extension, update the VScode, reboot the computer. But no matter how many times I tried to 
+    touch the compile button, or even I created a new file outside the repository, it just didn't work. So I realize maybe it's not 
+    problem of me, nor extension or computer. When I want to give up, I intend to open the compiler log and extension log, although I
+    knew the compiler of \LaTeX is so intricate that I can't even understand its output generally. 
+
+\subsubsection*{1.2 explanation}
+
+    In \LaTeX, a main way for compiler to determine where the main file is is to detect \\
+    \lstinline!\begin{document} \end{document}!. But when I copy code from a template, to modify some macro-define value, 
+    I delete that line by mistake. So compiler didn't treat it as a main file. 
+
+\subsubsection*{1.3 reflect}
+
+    Such a nonsensical bug took me a whole afternoon, which told me \textbf{reading the compiler log and even extension log is necessary} even though 
+    sometime the normal log is hard to understand. 
+    However \textbf{it doesn't means the error especially nonsensical error report is complicated} as well.
+
+
+
+\subsection*{BUG2. RISC-V Assembly Calling Convention}
+
+\subsubsection*{2.1 bug itself}
+
+    In summer holiday I took a open course about introduction to computer architecture. In Proj2, which helps students to be familiar with 
+    RISC-V assembly grammar and calling convention. I passed all the local tests, but when facing the eventual test about calling convention 
+    I failed.
+    
+    As a background, calling convention in RISC-V means some registers' value may change after calling function while others mustn't do.
+    This characteristic is implemented by coder instead of hardware itself so coder should store the latter ones at the beginning of the
+    function in stack and load back at the end. I checked all files and make sure I conform the rule, but it just can't pass. I once give up all.
+    But one day after lunch, I decide to read the code again, then I found the absurd bug source.
+
+\subsubsection*{2.2 explanation}
+
+    When I change a register's role to represent another thing, I forget to change it at another place, which won't get into an error but will break 
+    the calling convention. Consequently when calling the function again, the register's value changed and need to reload the original value.
+    
+    The whole reason that causes the bug is I have a (I thought good at the beginning) bad habit that I always want to optimize the code. 
+    When the habit functions on RISC-V, I always want to use less register to finish the work, which causes that I change what a register represent 
+    in the middle after I ascertain the former won't be used later. Not only does this habit cost extra time to ponder, but it is also easy to 
+    write wrong code hard to find bug in. 
+
+\subsubsection*{2.3 reflect}
+
+    This experience have a huge impact on me. 
+
+    First, as the course's instructor \href{https://www2.eecs.berkeley.edu/Faculty/Homepages/nweaver.html}{Professor.Weaver} said, every time you 
+    want to optimize the code, you'd better \textbf{think about why you should optimize it}, otherwise it doesn't make sense and 
+    is completely useless. 
+
+    Second, I read other people's code after debugging and found that they even tried using all register and comment on almost each line, which I 
+    thought was not "elegant". However this won't cause bugs basically. So another lesson for me is 
+    \textbf{commenting more especially when trying not so secure operations} and 
+    \textbf{being elegant is not to optimize without pondering}.
+
+\subsection*{Reflect on all}
+
+    Typically I seldom get blocked by bugs comparing to times when I had no idea about how to code at all thanks to modern debugger, 
+    step by step debugging method and Professor.Wu who taught me the skill on my first computer class. It is because of my reliability
+    on debugger instead of \textbf{compiler and debugging which are important as well} that I always be stuck by absurd bugs and stay 
+    in helplessness. The bugs above are classical examples.
+
+\section*{Other things}
+
+\LaTeX \space code refer to these things and was complied on texlive2020 by \lstinline{xelatex}.
+\begin{itemize}
+    \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+    \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+\end{itemize}
+
+The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+writing skills in preparation for a possible future exchange program. 
+
+Thanks for your correcting and grading :).
+
+\end{document}
+
+ 

@@ -1,0 +1,300 @@
+\documentclass[12pt, a4paper, oneside]{ctexart}
+\usepackage{amsmath, amsthm, amssymb, appendix, bm, graphicx, mathrsfs, geometry, xcolor}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-5}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+
+
+\linespread{1.5}
+\renewcommand{\abstractname}{\Large\textbf{摘要}}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=13cm]{../pic/logo1.png}
+\end{figure}
+
+\vspace*{\fill}
+    \begin{center}
+        \Huge\textbf{Action \& ActionListener的实现\\及与其他事件处理机制的比较分析}
+    \end{center}
+\vspace*{\fill}
+
+\begin{table}[b]
+    \centering
+    \large
+    \begin{tabular}{ll}
+        \textbf{课程:} & 软件系统设计与分析 \\
+        \textbf{姓名:} & 杨豪 \\
+        \textbf{班级:} & 软件2101 \\
+        \textbf{时间:} & 2022年9月 \\
+    \end{tabular}
+\end{table}
+
+\newpage
+
+\thispagestyle{empty}
+\begin{abstract}
+    事件处理是面向对象分析与设计中最常用的功能之一. 本文先简单论述了事件、事件处理、事件处理机制的概念, 然后以Java语言分别实现了基本的事件处理机制: 
+    同步调用、回调函数. 随后着重分析了Action\&ActionListener及其父类EventObject等接口的Java内部实现, 尝试用代码实现了一个简单的ActionListener机制. 
+    最后总结了以上三种事件处理机制的优缺点. 
+    \par\textbf{关键词：}事件处理机制; Java; 面向对象; Listener. 
+\end{abstract}
+
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\section{事件与事件处理机制概述}
+
+\subsection{事件与事件处理}
+
+    \begin{itemize}
+        \item 事件(event): 在软件设计中, 事件是可由软件识别并处理的动作(action)或发生情形(occurrence), 通常来自外部环境, 可以由系统、用户或其他方式生成或触发. 
+        \begin{itemize}
+            \item 事件的来源可能是用户据通过计算机的外围设备与软件交互(eg.通过键盘输入); 
+            \item 软件也可以触发它自己的事件集进入事件循环(eg.完成通信任务)
+        \end{itemize}
+        \item 事件处理(event processing): 软件识别某一特定事件进行并对其进行特定的处理方式
+    \end{itemize}
+
+\subsection{事件处理机制的组成}
+
+    一个事件机制一般有三个组成部分, 这里以生活中的事为例: 我一边打游戏一边烧水
+    \begin{itemize}
+        \item 事件源(source): 即事件的发送者. 在上例中为水壶; 
+        \item 事件(event): 事件源发出的一种信息或状态. 比如上例的警报声, 它代表着水开了; 
+        \item 事件侦听者(listener): 对事件作出反应的对象. 比如上例中打游戏的我
+    \end{itemize}
+    在设计事件机制时一般把侦听者设计为一个函数, 当事件发送时, 调用此函数。比如上例中可以把倒水设计为侦听者. 
+
+\subsection{简单的事件处理机制及其代码实现}
+
+    \subsubsection{方法调用}
+
+        方法调用即调用方\textbf{等待被调用方执行完毕并返回后}再继续执行, 因此是一种单向的阻塞式同步调用. 
+
+        该方法用代码实现起来很简洁. 
+        \lstinputlisting[
+            language  =   Java,
+            caption     =   {\bf method call.java},
+            label       =   {eg1.py}
+        ]{../src/eg1.java}
+
+        输出结果如下
+        \begin{lstlisting}[]
+            // 第三行等了约5s后才输出
+            This is Caller X, I will call Callee Y .
+            This is Callee Y, I was called.
+            Time cost is 5020 ms
+        \end{lstlisting}
+
+        显然, 因为\lstinline{callee}中的拖延, \lstinline{caller}也被拖了更多的时间. 
+
+    \subsubsection{回调函数}
+
+        回调函数: 回调是一种\textbf{双向}的调用模式, 设A和B是两个不同的类, 则B的该方法在被A调用, 完成后也会调用A的方法. 这样的调用需要定义一个interface, 
+        从而将interface作为参数传入.
+
+        这一思想实现起来比第一种略微麻烦一点: 
+        \lstinputlisting[
+            language  =   Java,
+            caption     =   {\bf Callback.java},
+            label       =   {eg2.py}
+        ]{../src/eg2.java}
+        输出结果如下
+        \begin{lstlisting}[]
+            // 第三行等了约5s后才输出
+            Caller boss will assign Callee worker a task.
+            This is Callee worker, I was called so I need to finish my task.
+            Caller boss received a Notice: Callee worker has done his task.
+        \end{lstlisting}
+        尽管该方法似乎并没有改进什么, 但我们可以使用java的多线程编程, 在\lstinline{getcall}中插入如下的代码, 即以异步的形式实现, 
+        则\lstinline{Caller}类就可以做自己的事而不必等待回复.
+        \begin{lstlisting}[language = Java]
+            new Thread(new Runnable()) {
+                public void run() {
+                    try {
+                        sleep(5000);
+                        cb.receiveNotice("Callee " + name + " has done his task.");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        \end{lstlisting}
+
+\section{Action \& ActionListener机制分析与实现}
+
+\subsection{Java中EventObject的基础概念}
+
+    面向对象分析与设计中还有一种基本的事件处理机制, 即监听, 这种事件处理机制将事件的处理过程分成了四部分: 
+    \begin{itemize}
+        \item Source：事件源，即触发事件的对象, 任何具有行为的对象可以是事件源; 
+        \item EventObject：事件对象, 即带有EventSource信息的事件对象, 也可以附带除source外的其它信息,是对EventSource的包装,  起到传递事件信息的作用; 
+        \item EventListener：事件监听器，对该事件的处理, 一个监听器可以监视多个事件源; 
+        \item 注册: 将Object和Listener绑定. 
+    \end{itemize}
+
+    \subsubsection{EventObject}
+
+        \lstinline{EventObject}是定义于\lstinline{java.util}的一个类, 直接继承于Object, 是所有事件对象的父类. 
+        \lstinline{ActionEvent}类的父类\lstinline{AWTEvent}也是继承于它(AWT是Java的一个用于编写图形应用程序的开发包). 
+
+        EventObject提供了3个方法: 
+        \begin{lstlisting}[language = Java]
+            EventObject(Object source)  //source不能为null
+            Object getSource();         //返回事件源
+            String toString();          //返回该事件类名与事件源名    
+        \end{lstlisting}
+
+    \subsubsection{EventListener}
+
+        EventListener也是定义于java.util包、直接继承于Object的接口, 是所有监听器的父接口, 无方法.
+
+\subsection{Action \& ActionListener的原理}
+
+经过查阅资料、源码和自己总结, Action\& ActionListener的实现原理如下
+\begin{itemize}
+    \item 定义过程
+    \begin{enumerate}
+        \item[a.] 为EventSource定义EventObject; 
+        \begin{itemize}
+            \item 组件( 如JFram、Button等) 触发Action等事件时EventObject的创建, 即定义过程的第一步, 是由JVM自动完成的. 
+        \end{itemize}
+        \item[b.] 为EventObject定义EventListener; 
+        \begin{lstlisting}[language = java]
+class MyActionListener implements ActionListener{
+    @Override
+    // 定义发生ActionEvent时要执行什么
+    public void actionPerformed(ActionEvent e){
+        // 一个Listener可能有多个Source, 所以通常先判断Source
+        if(e.getSource() == myButtonOne){...}
+        else if(e.getSource()==myButtonTwo{...}
+        ...
+        // if(e instanceof MyEvent)   
+        // 不关注事件源, 而关注事件类型时, 通过事件类型判断
+    }
+}   
+        \end{lstlisting}
+        \item[c.] 定义EventSource的类，指定添加EventListener的方法. 
+    \end{enumerate}
+    \item 触发过程: 以Button组件为例
+    \begin{enumerate}
+        \item[a.] 通过 addActionListener方法, 为Button添加了ActionListener接口实现类; 
+        \item[b.] Button类中定义的与点击相关的某个方法A 就会把自身作为source创建一个事件对象，并将该事件对象传入addActionListener方法所添加的监听器中; 
+        \begin{lstlisting}[language = java]
+JButton myButtonOne=new JButton("按钮一");
+JButton myButtonTwo=new JButton("按钮二");
+MyActionListener listener=new MyActionListener();
+myButtonOne.addActionListener(listener);
+myButtonTwo.addActionListener(listerner);
+        \end{lstlisting}
+        \item[c.] 在ActionListener中\textbf{根据source的类型或实例选择}执行某段代码(这里要用到前文中提到过的EventObject的getSource()方法). 
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Action \& ActionListener的代码实现}
+
+    \lstinputlisting[
+        language  =   Java,
+        caption     =   {\bf Action.java},
+        label       =   {eg3.py}
+    ]{../src/eg3.java}
+    输出结果如下, 代码通过\lstinline[language = Java]{implements EventListener}和\lstinline[language = Java]{extends EventObject}实现了监听器
+    并具有可监听多个源的特性.
+    \begin{lstlisting}[language = Java]
+Alex: 今天天气不错
+收到来自Alex的事件!
+Bobby: 适合出去走走
+
+当前共收到1次事件
+
+Alex: 今天天气不错
+收到来自Alex的事件!
+Bobby: 适合出去走走
+收到来自Bobby的事件!
+
+当前共收到3次事件
+    \end{lstlisting}
+
+
+\section{事件处理机制的优劣比较}
+
+\begin{itemize}
+    \item 同步调用
+    \begin{itemize}
+        \item 优点：代码简洁，实现容易.
+        \item 缺点: 调用者必须等待被调用者返回后再继续; 难以扩展新的方法.
+    \end{itemize}
+    \item 回调函数
+    \begin{itemize}
+        \item 优点: 代码相对容易实现; 可利用多线程编程, 调用者无需等待; 
+        \item 缺点: 多线程控制复杂，调试麻烦; 
+    \end{itemize}
+    \item ActionListener
+    \begin{itemize}
+        \item 优点: 支持多线程编程; 代码逻辑比较简单, Java内有成熟的功能库; 工程库父子继承关系明确, 便于扩展新的方法
+        \item 缺点: 比较依赖编程语言写好的框架, 如果完全自己实现会比较麻烦
+    \end{itemize}
+\end{itemize}
+
+%%% reference
+\newpage
+
+\begin{thebibliography}{99}
+    \bibitem{a}黄文海.Java多线程编程实战指南（设计模式篇）.[M].北京:电子工业出版社,2006.
+    \bibitem{b}action与actionlistener的关系.[DB/OL],\newline \url{https://zhuanlan.zhihu.com/p/65192541},2009.8.21.
+    \bibitem{c}Java——事件处理机制.[DB/OL],
+        \newline \url{https://blog.csdn.net/qq_19865749/article/details/70184968},2017.4.7.
+    \bibitem{d}Java ActionListener Interface.[DB/OL].
+        \newline \url{https://www.javatpoint.com/java-actionlistener},2021.
+    \bibitem{e}Interface ActionListener java SE 17 \& JDK 17 [DB/OL]\newline
+        \url{https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/ActionListener.html},2022.
+\end{thebibliography}
+
+
+%%% Appendix
+\newpage
+
+\begin{appendices}
+    \renewcommand{\thesection}{\Alph{section}}
+    \section{\LaTeX 排版参考}
+        本文中所用\LaTeX 代码参考自
+        \begin{itemize}
+            \item  \href{https://zhuanlan.zhihu.com/p/385727082}{【LaTeX】自用简洁模板（六）：学校作业} 
+            \item  \href{https://zhuanlan.zhihu.com/p/65441079}{LaTeX 里「添加程序代码」的完美解决方案}
+        \end{itemize}
+\end{appendices}
+
+
+
+\end{document}

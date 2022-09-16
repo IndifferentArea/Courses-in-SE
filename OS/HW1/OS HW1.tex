@@ -66,8 +66,7 @@ It \textbf{improves utilization of CPU} and other hardware resources by keeping 
     \item Read the Clock: \textbf{N}. Just reading status is secure for computer.
     \item Clear the Memory: \textbf{Y}. It could clear the kernel stack in the memory even kill a process without kernel mode. 
     \item Turn off the Interrupt: \textbf{Y}. Without interrupt malicious code won't be detected.
-    \item Switch from user mode to monitor mode(aka. kernel mode): \textbf{Y}. This function is executed after kernel mode traps 
-        the interrupt, which means it should only be executed in kernel mode. 
+    \item Switch from user mode to monitor mode(aka. kernel mode): \textbf{N}. eg. trap().
 \end{enumerate}
 
 \section*{Part-2 OS structures}
@@ -84,7 +83,7 @@ layer when debugging.
 The kernel is micro and well designed so it is easy to extend the operating system and to be ported from one hardware to another.
 
 eg. MacOS's core Darwin is a microkernel OS, so MacOS can be easily ported from Intel to ARM
-(Apple's own M-series chips are designed based on architecture).
+(Apple's own M-series chips are designed based on ARM architecture).
 
 \section*{Other things}
 
