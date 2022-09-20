@@ -84,19 +84,87 @@
 
 \section*{6.}
 
-% 6.  P131页 3.1\&3.2 P133页 3.12
+\subsection*{3.1}
+
+    Useful Concepts Review: 
+    \begin{itemize}
+        \item CPU Registers
+            \begin{itemize}
+                \item Program counter(PC): Address of instruction
+                \item Instruction register(IR): Instruction being executed
+                \item Accumulator(AC): Temporary storage
+            \end{itemize}
+        \item Opcode
+            \begin{itemize}
+                \item 0011(3): Load AC from I/O device
+                \item 0101(5): Add to AC from memory
+                \item 0111(7): Store AC to I/O device
+            \end{itemize}
+    \end{itemize}
+    Answer:
+    \begin{enumerate}[a.]
+        \item Load AC from device 5
+        \item Add contents of memory location 940
+        \item Store AC to device 6
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.7\textwidth]{pic/p1.pdf}
+            \caption{P131 3.1}
+        \end{figure}
+    \end{enumerate}
+
+\subsection*{3.2}
+
+Useful Concepts Review: 
+\begin{itemize}
+    \item MAR(Memory Address Register): specify the \textbf{address} in memory for the next read or write.
+    \item MBR(Memory Buffer Register): contain the \textbf{data} to be written into memory or receive the data read from memory.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pic/p2/p2-1.pdf}
+    \caption{P131 3.2.1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pic/p2/p2-2.pdf}
+    \caption{P131 3.2.2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pic/p2/p2-3.pdf}
+    \caption{P131 3.2.3}
+\end{figure}
+
+\subsection*{3.12}
+    $ T = \dfrac{1}{8\times 10^6\text{Hz}} = 125 \text{ns}$
+
+\subsubsection*{a.}
+
+    Answer: \textbf{2}
+    $$
+    \left \lceil \frac{180}{125}  \right \rceil = 2.
+    $$
+
+\subsubsection*{b.}
+
 
 \section*{Other things}
 
-\LaTeX \space code refer to these things and was complied on texlive2020.
 \begin{itemize}
-    \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
-    \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \item \LaTeX \space code refer to these things and was complied on texlive2020.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \end{itemize}
+    \item The figures in this homework is made with \href{https://apps.apple.com/us/app/goodnotes-5/id1444383602}{GoodNotes5}.
 \end{itemize}
-
 %% The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
 %% writing skills in preparation for a possible future exchange program. 
 
-Thanks for your correcting and grading :).
+    Thanks for your correcting and grading :).
 
 \end{document}
