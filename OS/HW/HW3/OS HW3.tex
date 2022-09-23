@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-5}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{3} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400227: Operating System}
+\def\simCourseName{OS}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{Thread}
+
+\subsection*{1. Differences between user-level thread and kernel level thread}
+
+    \begin{table}[H]
+        \begin{tabular}{|c|c|c|}
+        \hline
+                            & \textbf{User-level Thread}                                                                                    & \textbf{Kernel-level Thread}        \\ \hline
+        supported by        & a set of library calls in \textbf{user level}                                                           & \textbf{kernel}                        \\ \hline
+        time slice allocation & \begin{tabular}[c]{@{}c@{}}allocate time slice to process\\ Each thread allocates time slices equally\end{tabular} & \textbf{each thread with 1 time slice} \\ \hline
+        scheduler           & without support of OS                                                                                   & like process                  \\ \hline
+        other               &                                                                                                         & uint of CPU scheduling        \\ \hline
+        \end{tabular}
+    \end{table}
+
+\subsection*{2. Which components are shared across threads?}
+
+    \begin{enumerate}[a.]
+        \item Register values
+        \item Heap memory
+        \item Global variables
+        \item Stack memory
+    \end{enumerate}
+
+    Answer: \textbf{b.} Heap memory, \textbf{c.} Global variables
+
+\subsection*{3. Output from the program at LINE C and LINE P?}
+
+    \begin{lstlisting}[language = C]
+int value=0;
+void *runner(void *param); /* the thread */
+
+int main()
+{
+int pid;
+pthread_t tid;
+pthread_attr_t attr;
+pid=fork();
+if(pid==0){
+    pthread_attr_init(&attr);
+    pthread_create(&tid, &attr, runner, NULL);
+    pthread_join(tid, NULL);
+    printf("CHILD: value=%d\n", value);  /* LINE C */
+}else if(pid > 0){
+    wait(NULL);
+    printf("PARENT: value=%d\n",value);  /* LINE P */
+}
+}
+
+void *runner(void *param){
+    value=5;
+    pthread_exit(0);
+}
+    \end{lstlisting}
+
+    \textbf{Output:}
+    \begin{lstlisting}[language = C]
+        CHILD: value=5      // LINE C
+        PARENT: value=0     // LINE P
+    \end{lstlisting}
+
+\subsection*{4. Advantages and Disadvantages of three Multithreading Models.}
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|l|l|}
+            \hline
+            \textbf{\begin{tabular}[c]{@{}c@{}}Thread Model\\ (user to kernel)\end{tabular}} & \multicolumn{1}{c|}{\textbf{Advantages}}                                                                                                                                  & \textbf{Disadvantages}                                                                                                                                                                                                \\ \hline
+            Many-to-One                                                                      &                                                                                                                                                                           & \begin{tabular}[c]{@{}l@{}}1.entire process blocked by a thread\\ 2.not real concurrency \\ (a thread at kernel at the same time)\end{tabular}                                                                        \\ \hline
+            One-to-One                                                                       & \begin{tabular}[c]{@{}l@{}}allow another thread to run when one \\ blocked.\end{tabular}                                                                                  & \begin{tabular}[c]{@{}l@{}}When creating a user-level thread OS \\ needs to create the corresponding \\ kernel-level thread, which incurs \\ extra cost, so \textbf{the amount of thread} \\ \textbf{needs to be limited}.\end{tabular} \\ \hline
+            Many-to-Many                                                                     & \begin{tabular}[c]{@{}l@{}}multiplexes many user-level threads to a \\ smaller or equal number of kernel threads\\ \textbf{without limitation of amounts of threads}.\end{tabular} &                                                                                                                                                                                                                       \\ \hline
+        \end{tabular}
+    \end{table}
+
+% they also need to be checked.
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+        \item  \href{https://www.tablesgenerator.com/}{A free website helpful to generate \LaTeX \space table.}
+    \end{itemize}
+
+    Some description refer to \textit{Operating System Concepts 10th}, \href{https://en.wikipedia.org}{Wikipedia} and Professor.Tian's PPT.
+
+    The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+    writing skills in preparation for a possible future exchange program. 
+
+    \textbf{Sorry for ugly table in Problem 4, I've tried my best :(.}
+
+    Thanks for your correcting and grading :).
+
+\end{document}
