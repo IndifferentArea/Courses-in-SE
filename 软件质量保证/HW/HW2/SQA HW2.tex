@@ -1,0 +1,109 @@
+\documentclass[11pt, oneside]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, fancyhdr, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \bfseries,          % 关键字风格
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格, 斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么, 加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格, 显示了有点乱, 所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式, 小五号, tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置, t指的是top上面
+    frame               =   lrtb,   % 显示边框
+}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{2} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT410911: Software Quality Assurance}
+\def\simCourseName{SQA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\date{\today}
+
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's work.}
+
+\section*{Test Ideas List}
+
+\section*{1. Topic: Password Security Certify}
+
+    \begin{itemize} 
+        \item When creating an account, many application will detect if the password is secure. 
+            For example, it has to contain digit, punctuation and letter both capital and small. 
+            Also, it will confine the password length in a certain scope and so on.
+    \end{itemize}
+
+\section*{2. Test Ideas List}
+
+    22 test ideas in total.
+    \begin{table}[H]
+        \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Test}                                                                                                                      & \textbf{Risks}                    & \textbf{Expected Results}                                                                                   \\ \hline
+        LB of length                                                                                                                       & bound unclear                     & correct length                                                                                              \\ \hline
+        LB - 1                                                                                                                             & too short                         & report length error message                                                                                 \\ \hline
+        UB of length                                                                                                                       & bound unclear                     & correct length                                                                                              \\ \hline
+        UB + 1                                                                                                                             & too long                          & report length error message                                                                                 \\ \hline
+        none                                                                                                                               & nothing                           & report length error message                                                                                 \\ \hline
+        only digits                                                                                                                        & \multirow{5}{*}{lack of elements} & \multirow{5}{*}{\begin{tabular}[c]{@{}c@{}}report missing element \\ and unsafe error message\end{tabular}} \\ \cline{1-1}
+        only small letters                                                                                                                 &                                   &                                                                                                             \\ \cline{1-1}
+        only capital letters                                                                                                               &                                   &                                                                                                             \\ \cline{1-1}
+        only punctuation (space)                                                                                                           &                                   &                                                                                                             \\ \cline{1-1}
+        \begin{tabular}[c]{@{}c@{}}permutation of above 5 elements\\ many be $2^4-1 = 15$ kinds except correct\end{tabular} &                                   &                                                                                                             \\ \hline
+        correct length and safe enough                                                                                                     &                                   & successful                                                                                                  \\ \hline
+        contain username                                                                                                                   & unsafe                            & report unsafe message                                                                           \\ \hline
+        \begin{tabular}[c]{@{}c@{}}special keystroke\\ like F1 - F12 / ins / del / tab / esc...\end{tabular}                               & unexpected keystroke              & report keystroke error message                                                                   \\ \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Test Type}     & \textbf{Amount}           \\ \hline
+        special input test     & 2                         \\ \hline
+        length test            & 4                         \\ \hline
+        password security test & $2^4-1=15$                \\ \hline
+        successful test        & 1                         \\ \hline
+        all                    & 22                        \\ \hline
+        \end{tabular}
+    \end{table}
+
+
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020 by \lstinline{xelatex}.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \end{itemize}
+
+    The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+    writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}
+
+ 
