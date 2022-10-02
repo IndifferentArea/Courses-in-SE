@@ -1,0 +1,115 @@
+\documentclass[12pt, a4paper, oneside]{ctexart}
+\usepackage{amsmath, amsthm, amssymb, appendix, bm, graphicx, mathrsfs, geometry, xcolor}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-5}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+
+
+\linespread{1.5}
+\renewcommand{\abstractname}{\Large\textbf{摘要}}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=13cm]{../pic/xjtu.png}
+\end{figure}
+
+\vspace*{\fill}
+    \begin{center}
+        \centering
+        \vspace{-3cm}
+        \fangsong\huge{本科生课程报告} \\\kaishu \Huge{\textbf{需求管理系统分析与设计}}
+    \end{center}
+\vspace*{\fill}
+
+\begin{table}[b]
+    \centering
+    \large
+    \begin{tabular}{ll}
+        \textbf{课程:} & 软件系统设计与分析 \\
+        \textbf{姓名:} & 杨豪 \\
+        \textbf{班级:} & 软件2101 \\
+        \textbf{时间:} & 2022年10月 \\
+    \end{tabular}
+\end{table}
+
+\newpage
+
+\thispagestyle{empty}
+\begin{abstract}
+    事件处理是面向对象分析与设计中最常用的功能之一. 本文先简单论述了事件、事件处理、事件处理机制的概念, 然后以Java语言分别实现了基本的事件处理机制: 
+    同步调用、回调函数. 随后着重分析了Action\&ActionListener及其父类EventObject等接口的Java内部实现, 尝试用代码实现了一个简单的ActionListener机制. 
+    最后总结了以上三种事件处理机制的优缺点. 
+    \par\textbf{关键词：}事件处理机制; Java; 面向对象; Listener. 
+\end{abstract}
+
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\section{需求管理系统概述}
+
+\subsection{需求工程}
+
+把所有与需求直接相关的活动通称为需求工程。需求工程中的活动可分为两大类，一类属于需求开发，另一类属于需
+求管理。
+
+%%% reference
+\newpage
+
+\begin{thebibliography}{99}
+    \bibitem{a}黄文海.Java多线程编程实战指南（设计模式篇）.[M].北京:电子工业出版社,2006.
+    \bibitem{b}action与actionlistener的关系.[DB/OL],\newline \url{https://zhuanlan.zhihu.com/p/65192541},2009.8.21.
+    \bibitem{c}Java——事件处理机制.[DB/OL],
+        \newline \url{https://blog.csdn.net/qq_19865749/article/details/70184968},2017.4.7.
+    \bibitem{d}Java ActionListener Interface.[DB/OL].
+        \newline \url{https://www.javatpoint.com/java-actionlistener},2021.
+    \bibitem{e}Interface ActionListener java SE 17 \& JDK 17 [DB/OL]\newline
+        \url{https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/ActionListener.html},2022.
+\end{thebibliography}
+
+
+%%% Appendix
+\newpage
+
+\begin{appendices}
+    \renewcommand{\thesection}{\Alph{section}}
+    \section{\LaTeX 排版参考}
+        本文中所用\LaTeX 代码参考自
+        \begin{itemize}
+            \item  \href{https://zhuanlan.zhihu.com/p/385727082}{【LaTeX】自用简洁模板（六）：学校作业} 
+            \item  \href{https://zhuanlan.zhihu.com/p/65441079}{LaTeX 里「添加程序代码」的完美解决方案}
+        \end{itemize}
+\end{appendices}
+
+
+
+\end{document}
