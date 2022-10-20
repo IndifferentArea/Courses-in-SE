@@ -1,0 +1,98 @@
+\documentclass[11pt]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float, multirow}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage[table,xcdraw]{xcolor}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% need to be confirmed before each time writing and committing 
+\def\Homework{5} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400127: Computer Organization and Architecture}
+\def\simCourseName{OA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-~\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+~\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+    
+\section*{6.3 }
+
+\subsection*{a. }
+
+capacity = $8\times 256 \times 32 \times 1~\text{KB} = 2^{16}~\text{KB} = \mathbf{64}~\textbf{MB}$
+
+\subsection*{b.}
+\vspace{-1cm}
+$$
+\begin{aligned}
+    T_{a}=&T_{s}+\frac{1}{2 r}+\frac{b}{r N}=8 \mathrm{~ms}+\frac{1}{2\times \frac{3000 \mathrm{rpm} }{60 \mathrm{spm}}}+
+\frac{b}{\frac{3000 \mathrm{rpm} }{60 \mathrm{spm}}\times32~\text{KB}}+ \left \lfloor \frac{b}{32 ~\text{KB}} \right \rfloor \times 1.5~\text{ms}\\
+    =&18+0.625b+0.5\left \lfloor \frac{b}{32 } \right \rfloor ~\text{(ms)} b~\text{ is number of KB to be transferred}. 
+\end{aligned}
+$$
+
+\subsection*{c.}
+\vspace{-0.5cm}
+$$
+\begin{aligned}
+    T =& \frac{b}{r N} + ~\text{track-to-track access time} 
+        =\frac{2.5~\text{MB}}{\frac{3000 \mathrm{rpm} }{60 \mathrm{spm}}\times32~\text{KB}} + 
+        \left \lfloor \frac{2.5~\text{MB}}{32~\text{KB}} \right \rfloor \times 1.5~\text{ms}\\
+    = & 1600 + 120 = 1720~\text{ms} .
+\end{aligned}
+$$
+
+\subsection*{d. }
+
+$ ~\text{rate} = \frac{2.5~\text{MB}}{1720~\text{ms}} = 1.45 ~\text{MB/s}$
+
+
+\section*{6.10 }
+
+\subsection*{a. }
+
+$\left \lceil \frac{1000}{500} \right \rceil\times 150 = \$300 $
+
+\subsection*{b. }
+
+$\left \lceil \frac{1000}{400} \right \rceil\times 50  + 2500 = \$2650 $
+
+\subsection*{c. }
+
+$\left \lceil \frac{x}{400} \right \rceil\times 50  + 2500 < \left \lceil \frac{x}{500} \right \rceil\times 150  
+\Longrightarrow x > 14000~\text{GB}$
+
+\subsection*{d. }
+
+bigger data capacity requirement and slower speed requirement.
+
+\section*{Other things}
+
+\begin{itemize}
+    \item \LaTeX \space code refer to these things and was complied on texlive2020. 
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \end{itemize}
+    \item Some context refer to Professor Li.~'s PPT.
+\end{itemize}
+%% The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+%% writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}

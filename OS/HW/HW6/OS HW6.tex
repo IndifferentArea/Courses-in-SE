@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-4}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{6} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400227: Operating System}
+\def\simCourseName{OS}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\vspace{-0.8cm}
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{Deadlock}
+
+\subsection*{7.1 }
+
+\subsubsection*{a. }
+
+\begin{itemize}
+    \item Mutual Exclusion: Only one car at a time can pass a crossing.
+    \item Hold and wait: At least one car are waiting for another free crossing when it is passing one.
+    \item NO Preemption: Only when the former car have passed the crossing, the latter car can pass the same one.
+    \item Circular Wait: Cars which wait for the free crossing form a circle.
+\end{itemize}
+
+\subsubsection*{b. }
+
+Deal with the second condition: each car have to wait until all crossings it need to pass is free.
+
+\subsection*{7.2 }
+
+\subsubsection*{a. \& b. }
+
+The system is safe as below.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+                    & \begin{tabular}[c]{@{}c@{}}Allocation\\ A B C D\end{tabular} & \begin{tabular}[c]{@{}c@{}}Max\\ A B C D\end{tabular} & \textbf{\begin{tabular}[c]{@{}c@{}}Need\\ A B C D\end{tabular}} & Safety sequence & \textbf{\begin{tabular}[c]{@{}c@{}}Available\\ A B C D\end{tabular}} \\ \hline
+        \textbf{P0} & 0 0 1 2                                                      & 0 0 1 2                                               & \textbf{0 0 0 0}                                                & 1               & \textbf{1 5 2 0}                                                     \\ \hline
+        \textbf{P1} & 1 0 0 0                                                      & 1 7 5 0                                               & \textbf{0 7 5 0}                                                & 3               & \textbf{2 8 8 6}                                                     \\ \hline
+        \textbf{P2} & 1 3 5 4                                                      & 2 3 5 6                                               & \textbf{1 0 0 2}                                                & 2               & \textbf{1 5 3 2}                                                     \\ \hline
+        \textbf{P3} & 0 6 3 2                                                      & 0 6 5 2                                               & \textbf{0 0 2 0}                                                & 5               & \textbf{3 8 9 10}                                                    \\ \hline
+        \textbf{P4} & 0 0 1 4                                                      & 0 6 5 6                                               & \textbf{0 6 4 2}                                                & 4               & \textbf{3 8 8 6}                                                     \\ \hline
+    \end{tabular}
+\end{table}
+ 
+\subsubsection*{c.}
+
+Yes, because after new allocation the system is still safe as below.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+                & \begin{tabular}[c]{@{}c@{}}Allocation\\ A B C D\end{tabular} & \begin{tabular}[c]{@{}c@{}}Max\\ A B C D\end{tabular} & \textbf{\begin{tabular}[c]{@{}c@{}}Need\\ A B C D\end{tabular}} & Safety sequence & \textbf{\begin{tabular}[c]{@{}c@{}}Available\\ A B C D\end{tabular}} \\ \hline
+    \textbf{P0} & 0 0 1 2                                                      & 0 0 1 2                                               & \textbf{0 0 0 0}                                                & 1               & \textbf{1 5 2 0}                                                     \\ \hline
+    \textbf{P1} & 1 0 0 0                                                      & 1 7 5 0                                               & \textbf{0 7 5 0}                                                & 3               & \textbf{2 8 8 6}                                                     \\ \hline
+    \textbf{P2} & 1 3 5 4                                                      & 2 3 5 6                                               & \textbf{1 0 0 2}                                                & 2               & \textbf{1 5 3 2}                                                     \\ \hline
+    \textbf{P3} & 0 6 3 2                                                      & 0 6 5 2                                               & \textbf{0 0 2 0}                                                & 5               & \textbf{3 8 9 10}                                                    \\ \hline
+    \textbf{P4} & 0 0 1 4                                                      & 0 6 5 6                                               & \textbf{0 6 4 2}                                                & 4               & \textbf{3 8 8 6}                                                     \\ \hline
+    \end{tabular}
+\end{table}
+ 
+
+% they also need to be checked.
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+        \item  \href{https://www.tablesgenerator.com/}{A free website helpful to generate \LaTeX \space table.}
+    \end{itemize}
+
+    Some description refer to \textit{Operating System Concepts 10th}, \href{https://en.wikipedia.org}{Wikipedia} and Professor.Tian's PPT.
+
+    The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+    writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}

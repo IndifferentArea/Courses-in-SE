@@ -1,0 +1,239 @@
+\documentclass[11pt]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% need to be confirmed before each time writing and committing 
+\def\Homework{3} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400127: Computer Organization \& Architecture}
+\def\simCourseName{OA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{Problem 1. 4.1-4.3}
+
+\subsection*{4.1}
+
+Answer: Address structure is \textbf{4(SET)+8(TAG)+7(WORD)}.
+
+Main memory has $4\text{K}\times 128 = 2^{12+7} = 2^{19}$, so 19-bit word address needed in total.
+
+Set number $= 64\div 4 = 16 = 2^4$, so set index need 4 bits. Each block has $128 = 2^{7}$ words, so word index need 7 bits.
+So tag is 19-4-7=8 bits length.
+
+\subsection*{4.2}
+
+Answer: Address structure is \textbf{8(SET)+14(TAG)+4(WORD)}.
+
+Main memory has $64\text{M} = 2^{6+20} = 2^{26}$, so 26-bit address needed in total.
+
+Set number = $8K  \div 16 \div 2 = 256 = 2^8$, so set index need 8 bits. Each line has $16 = 2^{4}$ bytes, 
+so byte index need 4 bits. So tag is 26-8-4=14 bits length.
+
+\subsection*{4.3}
+
+Useful information:
+\begin{table}[H]
+    \begin{tabular}{|c|c|}
+        \hline
+        111111   & 000100010001000100010001 \\ \hline
+        666666   & 011001100110011001100110 \\ \hline
+        BBBBBB   & 101110111011101110111011 \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{enumerate}[a.]
+    \item direct-mapped cache as figure 4.10
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|c|}
+                \hline
+                    & Tag (8)       & Line (14)             & Word (2) \\ \hline
+                111111 & 00010001 = 11 & 00010001000100 = 0444 & 01 = 1   \\ \hline
+                666666 & 01100110 = 66 & 01100110011001 = 1999 & 10 = 2   \\ \hline
+                BBBBBB & 10111011 = BB & 10111011101110 = 2EEE & 11 = 3   \\ \hline
+            \end{tabular}
+        \end{table}
+    \item fully associative cache as figure 4.12
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+                & Tag (22)                     & Word (2) \\ \hline
+            111111 & 0001000100010001000100 = 044444 & 01 = 1   \\ \hline
+            666666 & 0110011001100110011001 = 199999 & 10 = 2   \\ \hline
+            BBBBBB & 1011101110111011101110 = 2EEEEE & 11 = 3   \\ \hline
+        \end{tabular}
+    \end{table}
+    \item two-way set associative cache as figure 4.15
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+                & Tag (9)         & Line (13)            & Word (2) \\ \hline
+            111111 & 000100010 = 022 & 0010001000100 = 0444 & 01 = 1   \\ \hline
+            666666 & 011001100 = 0CC & 1100110011001 = 1999 & 10 = 2   \\ \hline
+            BBBBBB & 101110111 = 177 & 0111011101110 = 2EEE & 11 = 3   \\ \hline
+        \end{tabular}
+    \end{table}
+\end{enumerate}
+
+\subsection*{4.4}
+
+\begin{table}[H]
+    \begin{tabular}{|c|ccc|}
+    \hline
+                                    & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Direct mapped\\ (4.10)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}fully associative\\ (4.12)\end{tabular}}} & \textbf{\begin{tabular}[c]{@{}c@{}}two-way set associative\\ (4.15)\end{tabular}} \\ \hline
+    address length                  & \multicolumn{3}{c|}{24}                                                                                                                                                                                                                                                             \\ \hline
+    number of addressable units     & \multicolumn{3}{c|}{$2^{24} = 16$M}                                                                                                                                                                                                                                    \\ \hline
+    block size                      & \multicolumn{3}{c|}{4 words}                                                                                                                                                                                                                                                        \\ \hline
+    number of blocks in main memory & \multicolumn{3}{c|}{$2^{22} = 4$M}                                                                                                                                                                                                                                     \\ \hline
+    number of lines in set          & \multicolumn{1}{c|}{1}                                                                       & \multicolumn{1}{c|}{$2^{14}$ = 4K}                                                  & 2                                                                                 \\ \hline
+    number of sets                  & \multicolumn{1}{c|}{$2^{14} = 4$K}                                              & \multicolumn{1}{c|}{1}                                                                           & $2^{13} = 4$K                                                        \\ \hline
+    number of lines in cache        & \multicolumn{3}{c|}{$2^{14} = 4$K}                                                                                                                                                                                                                                     \\ \hline
+    size of tag                     & \multicolumn{1}{c|}{8}                                                                       & \multicolumn{1}{c|}{22}                                                                          & 9                                                                                 \\ \hline
+    \end{tabular}
+\end{table}
+
+
+\section*{Problem 2. }
+
+    hit ratio of \textbf{FIFO} $= 0$
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            access      & 1 & 2 & 3 & 4 & 1 & 2 & 3 & 4 & 1 & 2 & 3 & 4 \\ \hline
+            hit?             & × & × & × & × & × & × & × & × & × & × & × & × \\ \hline
+            cache     & \textcolor{red}{1}00 & 1\textcolor{red}{2}0 & 12\textcolor{red}{3} & \textcolor{red}{4}23  & 4\textcolor{red}{1}3
+                & 41\textcolor{red}{2} & \textcolor{red}{3}12 & 3\textcolor{red}{4}2 & 34\textcolor{red}{1} & \textcolor{red}{2}41 
+                & 2\textcolor{red}{3}1 & 23\textcolor{red}4 \\ \hline
+            \end{tabular}
+        \caption{FIFO}
+    \end{table}
+    hit ratio of \textbf{LRU} $= 0$
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            access      & 1 & 2 & 3 & 4 & 1 & 2 & 3 & 4 & 1 & 2 & 3 & 4 \\ \hline
+            hit?             & × & × & × & × & × & × & × & × & × & × & × & × \\ \hline
+            cache     & \textcolor{red}{1}00 & 1\textcolor{red}{2}0 & 12\textcolor{red}{3} & \textcolor{red}{4}23  & 4\textcolor{red}{1}3
+                & 41\textcolor{red}{2} & \textcolor{red}{3}12 & 3\textcolor{red}{4}2 & 34\textcolor{red}{1} & \textcolor{red}{2}41 
+                & 2\textcolor{red}{3}1 & 23\textcolor{red}4 \\ \hline
+                LRU         & 100 & 120 & 123 & 423 & 453 & 456 & 756 & 786 & 789 & a89 & ab9 & abc \\ \hline            
+            \end{tabular}
+        \caption{LRU}
+    \end{table}
+    direct mapped will improve hit ratio to $\frac{4}{12} $
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            line number & 1   & 2   & 3   & 4   & 1   & 2   & 3   & 4   & 1   & 2   & 3   & 4   \\ \hline
+            status      & ×   & ×   & ×   & ×   & ×   & $\surd $   & $\surd $   & ×   & ×   & $\surd $   & $\surd $   & ×   \\ \hline
+            cache       & \textcolor{red}100 & 1\textcolor{red}20 & 12\textcolor{red}3 & \textcolor{red}423 & \textcolor{red}123 & 
+                1\textcolor{green}23 & 12\textcolor{green}3 & \textcolor{red}423 & \textcolor{red}123 & 1\textcolor{green}23 & 12\textcolor{green}3 
+                & \textcolor{red}423 \\ \hline
+        \end{tabular}
+        \caption{direct mapped}
+    \end{table}
+
+\section*{Problem 3.}
+
+\subsection*{1). }
+
+Answer: \textbf{The structure is 1(SET)+2(TAG)+2(WORD)}.
+
+Because main memory has 8 blocks, set index + tag are 3 bits at least. The cache has $2 = 4\div 2$ sets, need \textbf{1 bit for set index}, 
+so \textbf{2 bits for tag}. Each block contains 4 words, so \textbf{word index need 2 bits}.
+
+
+\subsection*{2). }
+
+\textbf{The left most bit of cache line number = The right most bit of main memory block number}.
+
+Set index is at the top of cache line number, while block number should modular sets number to decide which set to add in.
+
+\subsection*{3). \& 4). }
+Answer: 
+\textbf{hit ratio = $\dfrac{2 }{16}$}, \textbf{The first table} is solution to 3) and the second table is analysis process.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|cc|cc|}
+    \hline
+    block number & cache & \multicolumn{2}{c|}{set0}              & \multicolumn{2}{c|}{set1}          \\ \hline
+    1            & 0010  & \multicolumn{1}{c|}{invalid} & invalid & \multicolumn{1}{c|}{001} & invalid \\ \hline
+    2            & 2010  & \multicolumn{1}{c|}{010}     & invalid & \multicolumn{1}{c|}{001} & invalid \\ \hline
+    4            & 2410  & \multicolumn{1}{c|}{010}     & 100     & \multicolumn{1}{c|}{001} & invalid \\ \hline
+    1            & 2410  & \multicolumn{1}{c|}{010}     & 100     & \multicolumn{1}{c|}{001} & invalid \\ \hline
+    3            & 2413  & \multicolumn{1}{c|}{010}     & 100     & \multicolumn{1}{c|}{001} & 011     \\ \hline
+    7            & 2473  & \multicolumn{1}{c|}{010}     & 100     & \multicolumn{1}{c|}{111} & 011     \\ \hline
+    0            & 0473  & \multicolumn{1}{c|}{000}     & 100     & \multicolumn{1}{c|}{111} & 011     \\ \hline
+    1            & 0471  & \multicolumn{1}{c|}{000}     & 100     & \multicolumn{1}{c|}{111} & 001     \\ \hline
+    2            & 0271  & \multicolumn{1}{c|}{000}     & 010     & \multicolumn{1}{c|}{111} & 001     \\ \hline
+    5            & 0251  & \multicolumn{1}{c|}{000}     & 010     & \multicolumn{1}{c|}{101} & 001     \\ \hline
+    4            & 4251  & \multicolumn{1}{c|}{100}     & 010     & \multicolumn{1}{c|}{101} & 001     \\ \hline
+    6            & 4651  & \multicolumn{1}{c|}{100}     & 110     & \multicolumn{1}{c|}{101} & 001     \\ \hline
+    4            & 4651  & \multicolumn{1}{c|}{100}     & 110     & \multicolumn{1}{c|}{101} & 001     \\ \hline
+    7            & 4657  & \multicolumn{1}{c|}{100}     & 110     & \multicolumn{1}{c|}{101} & 111     \\ \hline
+    2            & 4257  & \multicolumn{1}{c|}{100}     & 010     & \multicolumn{1}{c|}{101} & 111     \\ \hline
+    \end{tabular}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        block number & address & hit?       & cache & LRU  \\ \hline
+        1            & 001     & ×          & 0010  & 0010 \\ \hline
+        2            & 010     & ×          & 2010  & 2010 \\ \hline
+        4            & 100     & ×          & 2410  & 2310 \\ \hline
+        1            & 001     & $\surd $    & 2410  & 2340 \\ \hline
+        3            & 011     & ×          & 2413  & 2345 \\ \hline
+        7            & 111     & ×          & 2473  & 2365 \\ \hline
+        0            & 000     & ×          & 0473  & 7365 \\ \hline
+        1            & 001     & ×          & 0471  & 7368 \\ \hline
+        2            & 010     & ×          & 0271  & 7968 \\ \hline
+        5            & 101     & ×          & 0251  & 79a8 \\ \hline
+        4            & 100     & ×          & 4251  & b9a8 \\ \hline
+        6            & 110     & ×          & 4651  & bca8 \\ \hline
+        4            & 100     & $\surd $    & 4651  & dca8 \\ \hline
+        7            & 111     & ×          & 4657  & dcae \\ \hline
+        2            & 010     & ×          & 4257  & dfae \\ \hline
+    \end{tabular}
+\end{table}
+
+\section*{Other things}
+
+\begin{itemize}
+    \item \LaTeX \space code refer to these things and was complied on texlive2020. 
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \end{itemize}
+    \item The figures in this homework is made with \href{https://apps.apple.com/us/app/goodnotes-5/id1444383602}{GoodNotes5}.
+\end{itemize}
+%% The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+%% writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}

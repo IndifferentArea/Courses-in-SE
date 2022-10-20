@@ -1,0 +1,220 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-4}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{5} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400227: Operating System}
+\def\simCourseName{OS}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\vspace{-0.8cm}
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{Synchronous and Mutual Exclusion}
+
+\subsection*{Problem 1. 6.4}
+Because the spinlock requires busy waiting, so there have to be another process executing that waits for the signal about interrupt condition.
+
+In single-processor systems, if the method's resource is the processor and doesn't release it, other processes won't be able to obtain 
+interrupt signal.
+
+In multiprocessor systems, processes can execute on other processors and obtain the signal so that the resources can be released.
+
+\subsection*{Problem 2. 6.9}
+
+If two same operations are executed on a semaphore at the same time and they
+are not performed atomically, both operations might simultaneously operate on the semaphore value, which violates mutual exclusion. 
+
+\subsection*{Problem 3. 6.11}
+
+\begin{lstlisting}[language = Java]
+Semaphore come_in = 1, customer = 0, baber = 1;
+int available = N;
+
+New_Customer{
+    P(come_in);
+    if(available != 0){
+        V(customer);
+        available --;
+    }
+    V(come_in);
+}
+
+Baber{
+    P(customer);
+    wake(baber);
+    P(baber);
+    while(++ available < N){
+        P(customer);
+    }
+    V(baber);
+    sleep(baber);
+}
+\end{lstlisting}
+
+
+\subsection*{Problem 4. }
+\begin{enumerate}
+    \item Yes, easy to lead to starvation; 
+    \item The mechanism of given abnormal PV operations is a stack but we need a queue. According to idea in Peterson's Algorithm, 
+        we can set N 1-length stack to simulate queue as below:
+
+\begin{lstlisting}[language = Java]
+    Semaphore S[N - 1];
+    for(int i = 0; i < N - 1; i ++) S[i] = N - i- 1;
+	for(int i = 0; i < N - 1; i ++) P(S[i]);
+	    // Critical Section
+	for(int i = n - 2; i >= 0; i --) V(S[i]);
+\end{lstlisting}
+
+The algorithm above take O(n) space. 
+Sadly, although this algorithm seems so easy and waste of characteristics, I still have no idea about how to optimize it.
+
+However, it is said that it has proved that there is a method using only O(log(N)) space, amazing!
+\end{enumerate}
+
+\subsection*{Problem 5. }
+We need 3 semaphore:
+\begin{itemize}
+    \item When there is a writer waiting, no more readers are allowed 
+        so ~\lstinline{Writer()}~ should control this sequence by a semaphore which is a crucial part of ~\lstinline{Reader()}~ —— ~\lstinline{preRead}~.
+        And this kind of control should be kept in a mutual exclusion environment, so we need another semaphore —— ~\lstinline{mutex}~.
+    \item When there is a reader reading, writer should waiting until it finished 
+    so as above, ~\lstinline{Reader()}~ need to guarantee this rule with a semaphore too. —— ~\lstinline{Writer}~.
+    and in the ~\lstinline{mutex}~ also.
+    \item There is always at most one writer writing at some time —— ~\lstinline{Writer}~ is adequate to deal with it.
+\end{itemize}
+
+\begin{lstlisting}[language = Java]
+    Semaphore mutex = 1, write = 1, preRead = 1;
+    int writeCount = 0, readCount = 0;
+    
+    Reader(){
+        P(preRead);
+        if(readCount==0) P(write);
+        readCount++;
+        V(preRead);
+
+        // Reader Critical Section.
+
+        P(mutex);
+        readCount--;
+        if(readCount==0) V(write);
+        V(mutex);
+    }
+    
+    Writer(){
+        P(mutex);
+        if(writeCount == 0) P(preRead);
+        writeCount ++;
+        V(mutex);
+        P(write);
+
+        // Writer Critical Section.
+
+        P(mutex);
+        writeCount --;
+        if(writeCount == 0) V(preRead);
+        V(write);
+        V(mutex);
+    }
+\end{lstlisting}
+
+\subsection*{Problem 6. }
+
+We need 3 semaphore:
+\begin{itemize}
+    \item The door is only allowed for one person to get in and get out, so we need ~\lstinline{door}~ to deal with this mutual exclusion.
+    \item There are N students inside the classroom, exam should begin, so we need ~\lstinline{exam}~ to deal with this synchronous.
+    \item When the exam begin and the teacher handout papers, the door should be closed. After the teacher handout papers, 
+        anybody who have handed can leave the classroom, so we need to open the door.We can use ~\lstinline{door}~ to control this flow. 
+    \item When all papers handed in the teacher can leave the classroom and the exam ended.
+        Students can hand in papers at the same time, so we just need one new semaphore, ~\lstinline{handin_done}~, to control this synchronous. 
+\end{itemize}
+
+\begin{lstlisting}[language = Java]
+    Semaphore door = 1, exam = 0, handin_done = 0;
+    int inCount = 0, paperCount = 0;
+    In(){
+        P(door);
+        inCount ++;
+        if(inCount == N) V(exam);
+        V(door);
+    }
+    Out(){
+        P(door);
+        inCount --;
+        V(door);
+    }
+    Exam(){
+        P(exam);
+        P(door);
+
+        // Exam Critical Section: hand out papers.
+
+        V(door);
+        P(handin_done);
+        // Teacher packaging papers;
+        V(exam);
+    }
+    Handin(){
+        paperCount ++;
+        if(paperCount == N) V(handin_done);
+    }
+\end{lstlisting}
+
+
+% they also need to be checked.
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+        \item  \href{https://www.tablesgenerator.com/}{A free website helpful to generate \LaTeX \space table.}
+    \end{itemize}
+
+    Some description refer to \textit{Operating System Concepts 10th}, \href{https://en.wikipedia.org}{Wikipedia} and Professor.Tian's PPT.
+
+    The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+    writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}

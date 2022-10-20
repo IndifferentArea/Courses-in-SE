@@ -1,0 +1,110 @@
+\documentclass[11pt, oneside]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, fancyhdr, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\usepackage{subcaption}
+\useunder{\uline}{\ul}{}
+
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \bfseries,          % 关键字风格
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格, 斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么, 加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格, 显示了有点乱, 所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式, 小五号, tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置, t指的是top上面
+    frame               =   lrtb,   % 显示边框
+}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{4} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT410911: Software Quality Assurance}
+\def\simCourseName{SQA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\date{\today}
+
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's work.}
+
+\section*{Risk-based Testing}
+
+采用之前使用过的QQ在web端的注册功能为例：
+\subsection*{1. 风险识别}
+可能的风险有
+\begin{enumerate}[a.]
+    \item 同时注册的人过多，服务器崩溃；
+    \item 不同的浏览器/设备端可能会导致网页上的错误；
+    \item 新增输入框或修改输入的限制可能会导致问题；
+    \item 非法输入导致的错误；
+    \item 点击页面上的外部链接可能导致的跳转失败
+\end{enumerate}
+
+\subsection*{2. 风险分析}
+综合查阅资料和模拟不同的用户体验，分析风险等级如下：
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        风险点 & 风险概率（1-5） & 风险影响（1-5） & 风险等级 \\ \hline
+        a   & 1         & 5         & 5    \\ \hline
+        b   & 3         & 3         & 9    \\ \hline
+        c   & 2         & 2         & 4    \\ \hline
+        d   & 5         & 4         & 20   \\ \hline
+        e   & 4         & 1         & 4    \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection*{3. 测试用例}
+
+由2 最高的两个等级为
+\begin{itemize}
+    \item[d.] 非法输入导致的错误：可以通过HW-3提到的\textbf{等价性测试}加上\textbf{边界测试}可以避免这种问题。
+    \item[b.] 不同的浏览器/设备端可能会导致网页上的错误：对所有常用的硬件设备端和软件设备端排列组合，测试每一种可能以确定注册功能无误。举例如下
+    \begin{itemize}
+        \item 平台：PC、手机、其他（如嵌入式）；
+        \item 操作系统：Windows、MacOS、Android、iOS、Linux；
+        \item 浏览器内核：IE内核、Chromium内核、Firefox内核、Safari内核、Opera浏览器内核；
+    \end{itemize}
+    共75种可能。
+\end{itemize}
+
+\subsection*{4. 具体执行测试用例}
+
+\begin{itemize}
+    \item[d.] 参见HW-3；
+    \item[b.] 只需对部署出的网页在不同的环境下进入即可，因选用QQ这一成熟的软件系统以及本人设备数不够未能顺利测试。
+\end{itemize}
+
+
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020 by \lstinline{xelatex}.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.tablesgenerator.com/}{A free website useful to edit \LaTeX \space table code.}
+    \end{itemize}
+
+    Thanks for your correcting and grading :).
+
+\end{document}
+
+ 
