@@ -47,65 +47,154 @@
 
 pdf中所示源码均附于src/文件夹中
 
-\section*{2-1 求众数}
+\section*{3-2}
 
 \subsection*{代码}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.8\textwidth]{pic/2-1src.png}
+        \includegraphics[width = 0.8\textwidth]{pic/3-2.png}
     \end{figure}
 
 \subsection*{输入}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.3\textwidth]{pic/2-1input.png}
-    \end{figure}
-
-\subsection*{运行结果}
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width = 1\textwidth]{pic/2-1res.png}
+        \includegraphics[width = 0.3\textwidth]{pic/3-2in.png}
     \end{figure}
 
 \subsection*{输出}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.3\textwidth]{pic/2-1output.png}
+        \includegraphics[width = 0.3\textwidth]{pic/3-2out.png}
     \end{figure}
 
-\section*{2-3 半数集}
+\section*{3-4}
 
 \subsection*{代码}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.8\textwidth]{pic/2-2src.png}
+        \includegraphics[width = 0.8\textwidth]{pic/3-4.png}
     \end{figure}
 
 \subsection*{输入}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.3\textwidth]{pic/2-2input.png}
-    \end{figure}
-
-\subsection*{运行结果}
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width = 1\textwidth]{pic/2-3res.png}
+        \includegraphics[width = 0.3\textwidth]{pic/3-4in.png}
     \end{figure}
 
 \subsection*{输出}
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width = 0.3\textwidth]{pic/2-3output.png}
+        \includegraphics[width = 0.3\textwidth]{pic/3-4out.png}
     \end{figure}
+
+\section*{3-6}
+
+\subsection*{代码}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.8\textwidth]{pic/3-6.png}
+    \end{figure}
+
+\subsection*{输入}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/3-6in.png}
+    \end{figure}
+
+\subsection*{输出}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/3-6out.png}
+    \end{figure}
+
+\section*{4-1}
+
+\subsection*{代码}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.8\textwidth]{pic/4-1.png}
+    \end{figure}
+
+\subsection*{输入}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/4-1in.png}
+    \end{figure}
+
+\subsection*{输出}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/4-1out.png}
+    \end{figure}
+
+\section*{4-9}
+
+\subsection*{证明}
+
+对于选好的分割
+如果还有更小值，则需要将其中n组相邻合为$n_1$个。将每相邻分割的分界线看做一个边。
+这里看做是对已选定的边进行“平移”，直接去掉某条边看做该边平移至下一条边。显然，每次平移至少需要一条边向后平移。
+
+假设可以平移，则对于向后平移的边，其平移所得到的 新分割之和 ≥ 原分割之和 + 原边所在的下一个数
+且要求 新分割之和<n，但如果新分割之和<n，原边就并不符合我们贪心的算法。
+
+
+\subsection*{代码}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.8\textwidth]{pic/4-9.png}
+    \end{figure}
+
+\subsection*{输入}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/4-9in.png}
+    \end{figure}
+
+\subsection*{输出}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/4-9out.png}
+    \end{figure}
+
+\section*{4-11}
+
+\subsection*{代码}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.8\textwidth]{pic/4-11.png}
+    \end{figure}
+
+\subsection*{输入}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/4-11in.png}
+    \end{figure}
+
+\subsection*{输出}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.3\textwidth]{pic/4-11out.png}
+    \end{figure}
+    
 
 \section*{Other things}
 
