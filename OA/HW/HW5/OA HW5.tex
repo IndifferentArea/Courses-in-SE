@@ -36,12 +36,13 @@
 capacity = $8\times 256 \times 32 \times 1~\text{KB} = 2^{16}~\text{KB} = \mathbf{64}~\textbf{MB}$
 
 \subsection*{b.}
-\vspace{-1cm}
+\vspace{-0.5cm}
 $$
 \begin{aligned}
-    T_{a}=&T_{s}+\frac{1}{2 r}+\frac{b}{r N}=8 \mathrm{~ms}+\frac{1}{2\times \frac{3000 \mathrm{rpm} }{60 \mathrm{spm}}}+
-\frac{b}{\frac{3000 \mathrm{rpm} }{60 \mathrm{spm}}\times32~\text{KB}}+ \left \lfloor \frac{b}{32 ~\text{KB}} \right \rfloor \times 1.5~\text{ms}\\
-    =&18+0.625b+0.5\left \lfloor \frac{b}{32 } \right \rfloor ~\text{(ms)} b~\text{ is number of KB to be transferred}. 
+    T_{a}=~&T_{s}+\frac{1}{2 r}+\frac{b}{r N} +\text{track-to-track access time}\\
+    =~&8 ~\text{ms}+\frac{1}{2\times \frac{3000 ~\text{rpm} }{60 ~\text{spm}}}+
+\frac{b}{\frac{3000 ~\text{rpm} }{60 ~\text{spm}}\times32~\text{KB}}+ \left(\left \lceil \frac{b}{32 \text{ KB}} \right \rceil - 1\right)\times 1.5~\text{ms}\\
+    =~&18+0.625b+1.5\left(\left \lceil \frac{b}{32 } \right \rceil - 1\right) \text{(ms)}, ~b\text{ is number of KB to be transferred}. 
 \end{aligned}
 $$
 
@@ -49,16 +50,16 @@ $$
 \vspace{-0.5cm}
 $$
 \begin{aligned}
-    T =& \frac{b}{r N} + ~\text{track-to-track access time} 
-        =\frac{2.5~\text{MB}}{\frac{3000 \mathrm{rpm} }{60 \mathrm{spm}}\times32~\text{KB}} + 
-        \left \lfloor \frac{2.5~\text{MB}}{32~\text{KB}} \right \rfloor \times 1.5~\text{ms}\\
-    = & 1600 + 120 = 1720~\text{ms} .
+    T =& \frac{b}{r N} + ~\text{track-to-track access time} \\
+    =&\frac{2.5~\text{MB}}{\frac{3000 ~\text{rpm} }{60 ~\text{spm}}\times32~\text{KB}} + 
+        \left(\left \lceil \frac{2.5~\text{MB}}{32~\text{KB}} \right \rceil - 1\right) \times 1.5~\text{ms}\\
+    = & 1600 + 118.5 = 1718.5~\text{ms} .
 \end{aligned}
 $$
 
 \subsection*{d. }
 
-$ ~\text{rate} = \frac{2.5~\text{MB}}{1720~\text{ms}} = 1.45 ~\text{MB/s}$
+$ ~\text{rate} = rN = \frac{3000 ~\text{rpm} }{60 ~\text{spm}} \times 2^5~\text{KB}\approx 1.56~\text{MB/s}$
 
 
 \section*{6.10 }
