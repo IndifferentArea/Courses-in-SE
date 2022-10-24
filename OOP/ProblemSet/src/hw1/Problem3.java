@@ -1,3 +1,5 @@
+package hw1;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;

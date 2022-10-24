@@ -1,3 +1,5 @@
+package hw1;
+
 import static java.lang.Math.abs;
 
 public class Problem2 {
