@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float, multirow}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage[table,xcdraw]{xcolor}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% need to be confirmed before each time writing and committing 
+\def\Homework{9} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400127: Computer Organization and Architecture}
+\def\simCourseName{OA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-~\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+
+\begin{document}
+\maketitle
+
+~\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+    
+\section*{Computer Arithmetic}
+
+\textbf{Attention}: “|” is just for reading convenience.
+
+\subsection*{1. }
+
+Answer: \textbf{0|10000011|01001001100000000000000}, 
+
+$ (20.59375)_{10} = (10100.10011)_2 = (1.010010011)_2 \times 2^4$
+
+\begin{itemize}
+    \item Sign. Positive float, 0. 
+    \item Exponent. $4_{10} = (10000011)_2$(biased with -127).
+    \item Mantissa. 010010011 along with following zeros.
+\end{itemize}
+
+Summary as below:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \cellcolor[HTML]{D2D2E7}\textbf{Sign (1 bit)} & \cellcolor[HTML]{C0DDC2}\textbf{Exponent (8 bits)} & \cellcolor[HTML]{DDD0C4}\textbf{Mantissa (23 bits)} \\ \hline
+    \textbf{0}                                    & \textbf{10000011}                                  & \textbf{01001001100000000000000}                    \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection*{2. }
+
+Answer: \textbf{11.375}.
+
+$(41360000)_{16} = (0100|0001|0011|0110|0000|0000|0000|0000)_2 = (0|10000010|01101100000000000000000)_2$
+\begin{itemize}
+    \item Sign. 0, so positive float.
+    \item Exponent. $(10000010)_2\text{(biased with -127)}= 3$.
+    \item Mantissa. Take off following zeros, $(1.011011)_2$
+\end{itemize}
+So the float is $(1.011011)_2\times 2^3 = (1011.011)_2 = 11.375$
+
+\subsection*{3. }
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Register & Variable & type                          & bits              & value         &                   \\ \hline
+    R1       & x        & \multirow{2}{*}{unsigned int} & \textbf{10000110} & 134           &                   \\ \cline{1-2} \cline{4-6} 
+    R2       & y        &                               & 11110110          & 246           &                   \\ \hline
+    R3       & m        & \multirow{2}{*}{int}          & 10000110          & \textbf{-122} &                   \\ \cline{1-2} \cline{4-6} 
+    R4       & n        &                               & 11110110          & -10           &                   \\ \hline
+    R5       & z1       & \multirow{2}{*}{unsigned int} & \textbf{10010000} & 144           & overflow          \\ \cline{1-2} \cline{4-6} 
+    R6       & z2       &                               & \textbf{01111100} & 124           & overflow          \\ \hline
+    R7       & k1       & \multirow{2}{*}{int}          & 10000110          & \textbf{-112} &                   \\ \cline{1-2} \cline{4-6} 
+    R8       & k2       &                               & 01111100          & 124           & \textbf{overflow} \\ \hline
+    \end{tabular}
+\end{table}
+
+\section*{Other things}
+
+\begin{itemize}
+    \item \LaTeX \space code refer to these things and was complied on texlive2020. 
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \end{itemize}
+    \item Some context refer to Professor Li.~'s PPT.
+\end{itemize}
+%% The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+%% writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}
