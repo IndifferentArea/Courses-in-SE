@@ -1,6 +1,6 @@
-package hw2with3.p2;
+package hw2.p2;
 
-import hw2with3.p1.MyTime;
+import hw2.p1.MyTime;
 
 import javax.swing.*;
 
@@ -9,7 +9,7 @@ public class TestDrawTimer {
     public static int APP_HEIGHT = 300;
 
     public static void main(String[] args) throws InterruptedException {
-        MyTime Test_Time =  new MyTime(23, 59, 50);
+        MyTime Test_Time =  new MyTime(21, 30, 15);
         DrawPanel timer_panel = new DrawPanel(Test_Time);
         JFrame application = new JFrame();
         application.setTitle("面向对象程序设计第2次作业");

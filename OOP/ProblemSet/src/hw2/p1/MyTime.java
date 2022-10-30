@@ -1,7 +1,7 @@
-package hw2with3.p1;
+package hw2.p1;
 
-import hw2with3.p2.Drawable;
-import hw2with3.p2.MyLine;
+import hw2.p2.Drawable;
+import hw2.p2.MyLine;
 
 import java.awt.*;
 
@@ -109,5 +109,8 @@ public class MyTime implements Drawable {
         double hour_angle = (float)hour/6 *Math.PI + minute_angle / 12;
         MyLine hour_line = new MyLine(CENTER_X, CENTER_Y, 40, hour_angle - Math.PI / 2, Color.blue);
         hour_line.draw(g);
+
+        g.setColor(Color.black);
+        g.drawString(this.toUniversalString(),CENTER_X - RADIX/2, CENTER_Y - RADIX - FONT_SIZE );
     }
 }

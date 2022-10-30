@@ -1,4 +1,4 @@
-package hw2with3.p2;
+package hw2.p2;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -39,11 +39,10 @@ public class DrawPanel extends JPanel {
         for (Object o : objects){
             if(o instanceof Drawable)
                 ((Drawable)o).draw(g);
-            else g.drawString(objects.getClass().getName() + "dosen't implements Drawable",50,50);
+            else g.drawString(objects.getClass().getName() + "doesn't implements Drawable",50,50);
         }
 
     }
-
 }
 
 

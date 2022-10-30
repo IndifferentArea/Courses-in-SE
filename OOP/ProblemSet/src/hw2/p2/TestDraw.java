@@ -1,4 +1,4 @@
-package hw2with3.p2;
+package hw2.p2;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,6 @@ public class TestDraw {
         JFrame application = new JFrame();
         application.setTitle("面向对象程序设计第2次作业");
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         application.setSize(APP_WIDTH, APP_HEIGHT);
         application.setVisible(true);

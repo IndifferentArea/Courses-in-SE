@@ -1,4 +1,4 @@
-package hw4;
+package hw2.p4;
 
 public class Bird {
     public void gulgate(Bird b) {
@@ -18,5 +18,7 @@ class Falcon extends Bird {
         falcon.gulgate(falcon);
     }
 }
-
-
+// 运行结果为
+// BiGulBi
+// FaGulFa
+// Overload is not override! 方法选择会遵循“就近原则”

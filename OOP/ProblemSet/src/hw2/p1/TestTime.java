@@ -1,7 +1,8 @@
-package hw2with3.p1;
+package hw2.p1;
 
 public class TestTime {
     public static void main(String[] args) {
+        // Official Test
         MyTime t1 = new MyTime();
         MyTime t2 = new MyTime(2);
         MyTime t3 = new MyTime(21, 34);
@@ -29,7 +30,7 @@ public class TestTime {
         System.out.println("t6: invalid values");
         System.out.printf("%s\n", t6.toUniversalString());
 
-        // Test for new increment methods
+        // My Test for new increment methods
         System.out.println("-----NEW TESTS FOR INCREMENT-----");
         MyTime t7 = new MyTime(1,2,3);
         System.out.printf("t7 is initialized as %s\n",t7.toUniversalString());

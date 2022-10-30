@@ -1,4 +1,4 @@
-package hw4;
+package hw2.p4;
 
 
 // CAST only change static type (lie to compiler)
@@ -15,6 +15,7 @@ class Supplier extends Contact {
         return "send money \n";
     }
 
+    void doStuff(int a ){ }
     String dome() {
         return "me\n";
     }
@@ -43,6 +44,25 @@ class Supplier extends Contact {
         System.out.println(((Contact)supplier).doStuff() + supplier.a + supplier.b + supplier.c);
         System.out.println(contact.doStuff() + contact.a + contact.b + ((Supplier)contact).doStuff() + ((Contact)contact).doStuff());
     }
-
 }
+// 运行结果：
+// send money
+// supplier's Supplier :: a
+// supplier's Contact :: b
+// supplier's Contact :: b
+//
+// howdy
+// contact's Contact :: a
+// contact's Contact :: b
+//
+// send money
+// supplier's Supplier :: new a by contact cast
+// supplier's Contact :: new b
+// supplier's Supplier :: new c by contact cast
+//
+// send money
+// supplier's Contact :: new a
+// supplier's Contact :: new b
+// send money
+// send money
 

@@ -1,4 +1,4 @@
-package hw2with3.p2;
+package hw2.p2;
 
 import java.awt.*;
 
@@ -80,9 +80,9 @@ public class MyCircle extends MyShape implements calcAreable {
 
 	public void draw(Graphics g) {
 		g.setColor(line_Color);
-		g.drawOval(x_position + radix, y_position + radix, radix, radix);
+		g.drawOval(x_position - radix, y_position - radix, 2*radix, 2*radix);
 		g.setColor(context_Color);
-		g.fillOval(x_position + radix, y_position + radix, radix, radix);
+		g.fillOval(x_position - radix, y_position - radix, 2*radix, 2*radix);
 	}
 
 	@Override
