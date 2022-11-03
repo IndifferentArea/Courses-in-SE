@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-4}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+%%
+% need to be confirmed before each time writing and committing 
+\def\Homework{8} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400227: Operating System}
+\def\simCourseName{OS}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\vspace{-0.8cm}
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{Memory Management}
+
+\subsection*{9.4}
+
+virtual address: $11123456_{16}={0001 0001 0001 0010 0011 0100 0101 0110}_2$
+
+virtual-memory has $\displaystyle \frac{2^{32}}{4096} = 2^{20}$ pages.
+
+physical-memory has $\displaystyle \frac{2^{18}}{4096} = 2^6$ pages.
+
+So the first 20 bits of virtual address should be translated into 6 bits by page-table and the 6 bits result 
+should combine with other 12 bits to generate physical address.
+
+Page tables are in hardware, but a little software is needed to tell CPU to use it.
+
+\subsection*{9.10}
+
+The system takes too much memory of paging disk. If the degree of multiprogramming decreases or the physical memory is improved
+the process will page fault less frequently. 
+
+\begin{enumerate}[a. ]
+    \item No.
+    \item No.
+    \item No. Contrary effect.
+    \item Yes.
+    \item Yes if the memory is big enough.
+    \item Yes. The same reason as e.
+    \item Yes since CPU can transfer data faster.
+    \item Yes since page fault will be less and more data will be transferred once.
+\end{enumerate}
+
+\subsection*{9.13}
+
+\subsubsection*{a.}
+
+\begin{enumerate}
+    \item initial value is 0;
+    \item when the page is accessed, add by 1;
+    \item when the page is replaced, decreased to 1;
+    \item choose the smallest counter, and if number is equal, FIFO.
+\end{enumerate}
+
+\subsection*{b.}
+13
+\begin{table}[H]
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    1-4          & \textbf{5}   & \textbf{3}   & 4            & \textbf{1}   & \textbf{6}   & \textbf{7}   & \textbf{8}   & \textbf{7}   & \textbf{8}   & \textbf{9}   & \textbf{7}   & \textbf{8}   & \textbf{9}   & \textbf{5}   & \textbf{4}   & \textbf{5}   & \textbf{4}   & \textbf{2}   \\ \hline
+    \textbf{1 1} & \textbf{5 1} & 5 1          & 5 1          & 5 1          & \textbf{6 1} & 6 1          & 6 1          & 6 1          & 6 1          & \textbf{9 1} & 9 1          & 9 1          & \textbf{9 2} & 9 2          & \textbf{4 1} & 4 1          & \textbf{4 2} & 4 2          \\ \hline
+    \textbf{2 1} & 2 1          & 2 1          & 2 1          & \textbf{1 1} & 1 1          & \textbf{7 1} & 7 1          & \textbf{7 2} & 7 2          & 7 2          & \textbf{7 3} & 7 3          & 7 3          & 7 3          & 7 3          & 7 3          & 7 3          & \textbf{2 1} \\ \hline
+    \textbf{3 1} & 3 1          & \textbf{3 2} & 3 2          & 3 2          & 3 2          & 3 2          & \textbf{8 1} & 8 1          & \textbf{8 2} & 8 2          & 8 2          & \textbf{8 3} & 8 3          & 8 3          & 8 3          & 8 3          & 8 3          & 8 3          \\ \hline
+    \textbf{4 1} & 4 1          & 4 1          & \textbf{4 2} & 4 2          & 4 2          & 4 2          & 4 2          & 4 2          & 4 2          & 4 2          & 4 2          & 4 2          & 4 2          & \textbf{5 1} & 5 1          & \textbf{5 2} & 5 2          & 5 2          \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection*{c.}
+11
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    1-4 & \textbf{5} & \textbf{3} & 4         & \textbf{1} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{5} & \textbf{4} & \textbf{5} & \textbf{4} & \textbf{2} \\ \hline
+    1   & \textbf{}  &            &           &            & 6          &            & 8          &            &            & \textbf{}  &            &            & \textbf{}  &            & \textbf{}  &            & \textbf{}  & 2          \\ \hline
+    2   & 5          &            &           & \textbf{}  &            & \textbf{}  &            & \textbf{}  &            &            & \textbf{}  &            &            &            &            &            &            & \textbf{}  \\ \hline
+    3   &            & \textbf{}  &           &            &            & 7          & \textbf{}  &            & \textbf{}  &            &            & \textbf{}  &            &            & 4          &            &            &            \\ \hline
+    4   &            &            & \textbf{} &            &            &            &            &            &            & 9          &            &            &            & \textbf{}  &            & \textbf{}  &            &            \\ \hline
+    \end{tabular}
+\end{table}
+
+% they also need to be checked.
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+        \item  \href{https://www.tablesgenerator.com/}{A free website helpful to generate \LaTeX \space table.}
+    \end{itemize}
+
+    Some description refer to \textit{Operating System Concepts 10th}, \href{https://en.wikipedia.org}{Wikipedia} 
+    and Professor.Tian's PPT.
+
+    The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+    writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}
