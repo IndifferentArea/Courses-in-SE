@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float, multirow}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage[table,xcdraw]{xcolor}
+
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% need to be confirmed before each time writing and committing 
+\def\Homework{12} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400127: Computer Organization and Architecture}
+\def\simCourseName{OA}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-~\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+~\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+    
+\section*{CPU Structure and Function}
+
+\subsection*{1. }
+
+\begin{itemize}
+    \item In the Von Neumann architecture, we can set PC point at executing instruction.
+    \item In the Harvard architecture, we can store instruction and date in different memory.
+\end{itemize}
+
+\subsection*{2. }
+
+\subsubsection*{1). }
+
+IX represents Instruction X. 
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+            & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10 & 11 & 12 & 13 & 14 & 15 & 16                      \\ \hline
+        I1  & FI & DI & EX & MA & WB &    &    &    &    &    &    &    &    &    &    &                         \\ \hline
+        I2  &    & FI & DI & EX & MA & WB &    &    &    &    &    &    &    &    &    &                         \\ \hline
+        I3  &    &    & FI & DI & EX & MA & WB &    &    &    &    &    &    &    &    &                         \\ \hline
+        I4  &    &    &    & FI & DI & EX & MA & WB &    &    &    &    &    &    &    &                         \\ \hline
+        I5  &    &    &    &    & FI & DI & EX & MA & WB &    &    &    &    &    &    &                         \\ \hline
+        I6  &    &    &    &    &    & FI & DI & EX & MA & WB &    &    &    &    &    &                         \\ \hline
+        I7  &    &    &    &    &    &    & FI & DI & EX & MA & WB &    &    &    &    &                         \\ \hline
+        I8  &    &    &    &    &    &    &    & FI & DI & EX & MA & WB &    &    &    &                         \\ \hline
+        I9  &    &    &    &    &    &    &    &    & FI & DI & EX & MA & WB &    &    &                         \\ \hline
+        I10 &    &    &    &    &    &    &    &    &    & FI & DI & EX & MA & WB &    &                         \\ \hline
+        I11 &    &    &    &    &    &    &    &    &    &    & FI & DI & EX & MA & WB &                         \\ \hline
+        I12 &    &    &    &    &    &    &    &    &    &    &    & FI & DI & EX & MA & WB                      \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection*{2). }
+
+speedup = $\displaystyle \frac{12\times 5}{5+12-1} = 3.75$
+
+throughput = $\displaystyle \frac{12}{(5+12-1)\tau} = 7.5\times 10^6 /s$
+
+\subsection*{3. }
+
+\subsubsection*{a. }
+
+clock cycle = $\displaystyle \frac{1}{2.5 \text{GHz}} =  0.4$ns.
+
+speedup = $\displaystyle \frac{1.5 ~\text{M}\times 5}{1.5 ~\text{M} + 5-1} = 5$
+
+\subsubsection*{b. }
+
+throughput = $\displaystyle \frac{1.5 \text{M}}{(5+1.5 ~\text{M}-1)\tau} = 2.5\times 10^9 /s $. 
+
+\section*{Other things}
+
+\begin{itemize}
+    \item \LaTeX \space code refer to these things and was complied on texlive2020. 
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+    \end{itemize}
+    \item Some context refer to Professor Li.~'s PPT.
+\end{itemize}
+
+The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+writing skills in preparation for a possible future exchange program. 
+
+    Thanks for your correcting and grading :).
+
+\end{document}
