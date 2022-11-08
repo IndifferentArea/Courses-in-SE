@@ -4,6 +4,7 @@ public class Bird {
     public void gulgate(Bird b) {
         System.out.println("BiGulBi");
     }
+    public static int add(int a,int b){ return a+b;}
 }
 
 class Falcon extends Bird {
@@ -12,6 +13,10 @@ class Falcon extends Bird {
     }
 
     public static void main(String[] args) {
+        extracted();
+    }
+
+    private static void extracted() {
         Bird bird = new Falcon();
         Falcon falcon = (Falcon) bird;
         bird.gulgate(falcon);
