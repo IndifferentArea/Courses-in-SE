@@ -19,7 +19,6 @@ class Supplier extends Contact {
     String dome() {
         return "me\n";
     }
-
     public String a;
     public String c;
 
@@ -43,6 +42,21 @@ class Supplier extends Contact {
         ((Supplier)contact).c = "supplier's Supplier :: new c by contact cast\n";
         System.out.println(((Contact)supplier).doStuff() + supplier.a + supplier.b + supplier.c);
         System.out.println(contact.doStuff() + contact.a + contact.b + ((Supplier)contact).doStuff() + ((Contact)contact).doStuff());
+
+        int a = 5;
+        switch (a) {
+            case 1 -> {
+                a = 2;
+            }
+            case 2 -> {
+                a = 3;
+            }
+            case 0 -> {
+                a = 5;
+            }
+            default -> {
+            }
+        }
     }
 }
 // 运行结果：
