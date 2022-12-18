@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.xjtu.server.mapper.OrderMapper">
+    <resultMap type="Order" id="orderMap">
+        <id property="orderId" column="order_id"/>
+        <result property="destProvince" column="dest_province"/>
+        <result property="user" column="user"/>
+        <result property="carId" column="car_id"/>
+        <result property="endStatus" column="end_status"/>
+        <result property="shouldPay" column="should_pay"/>
+        <result property="actuallyPay" column="actually_pay"/>
+        <result property="completeSatus" column="complete_satus"/>
+        <result property="createTime" column="create_time"/>
+        <result property="provinceSignTime" column="province_sign_time"/>
+        <result property="spotSignTime" column="spot-sign_time"/>
+        <result property="finishTime" column="finish_time"/>
+        <collection property="items" ofType="OrderItem" resultMap="itemMap">
+        </collection>
+    </resultMap>
+    <resultMap type="OrderItem" id="itemMap">
+        <id property="itemId" column="item_id"/>
+        <result property="product" column="product"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="orderId" column="order_id"/>
+    </resultMap>
+
+    <select id="queryOrderDetails" resultMap="orderMap">
+        select * from `order`,order_item where `order`.order_id=order_item.order_id and `order`.order_id = #{order_id}
+    </select>
+</mapper>
