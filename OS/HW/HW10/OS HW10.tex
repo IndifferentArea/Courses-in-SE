@@ -1,0 +1,113 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-4}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+%%
+% need to be confirmed before each time writing and committing 
+\def\Homework{10} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT400227: Operating System}
+\def\simCourseName{OS}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\vspace{-0.8cm}
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{12.2}
+
+% Please add the following required packages to your document preamble:
+
+\begin{table}[H]
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+       &        &     &     &      &      &      &      &      &      &            &         &    &     & total distance \\ \hline
+    a. & FCFS   & 143 & 86  & 1470 & 913  & 1774 & 948  & 1509 & 1022 & 1750       & 130     &    &     & 7081           \\ \hline
+    b. & SSTF   & 143 & 130 & 86   & 913  & 948  & 1022 & 1470 & 1509 & 1750       & 1774    &    &     & 1745           \\ \hline
+    c. & SCAN   & 143 & 913 & 948  & 1022 & 1470 & 1509 & 1750 & 1774 & {\ul 4999} & 130     & 86 &     & 9769           \\ \hline
+    d. & LOOK   & 143 & 913 & 948  & 1022 & 1470 & 1509 & 1750 & 1774 & 130        & 86      &    &     & 3319           \\ \hline
+    e. & C-SCAN & 143 & 913 & 948  & 1022 & 1470 & 1509 & 1750 & 1774 & {\ul 4999} & {\ul 0} & 86 & 130 & 9985           \\ \hline
+    f. & C-LOOK & 143 & 913 & 948  & 1022 & 1470 & 1509 & 1750 & 1774 & 86         & 130     &    &     & 3363           \\ \hline
+    \end{tabular}
+\end{table}
+
+\section*{I/O System}
+
+\subsection*{1. }
+
+设备独立性是指应用程序独立于具体使用的物理设备。
+
+设备独立性概念的引入是为了实现设备分配时的灵活性和易于实现I/O重定向。
+
+为了实现设备独立性引入逻辑设备和物理设备，应用程序使用逻辑设备名称来请求使用设备，系统需将逻辑设备名称转换为某物理设备。
+因此也需要一个逻辑设备表LUT(Logical Unit Table) ： 将应用程序中所使用的逻辑设备名映射为物理设备名。
+
+\subsection*{2. }
+
+SPOOLing技术是用于将一台独占设备改造成共享设备的一种行之有效的技术
+
+利用多道程序中的一道程序来模拟脱机输入时的外围控制机的功能，把低速I/O设备上的数据传送到高速磁盘上；
+用另一道程序来模拟脱机输出时外围控制机的功能，把数据从磁盘传送到低速输出设备上
+从而实现脱机输入、输出功能，此时的外围操作与CPU对数据的处理同时进行。
+
+\subsection*{3. }
+
+\begin{itemize}
+    \item 将接收到的抽象要求转换为具体要求。
+    \item 检查用户 I/O 请求的合法性，了解 I/O 设备的状态，传递有关参数，设置设备的工作方式。
+    \item 发出 I/O 命令，启动分配到的 I/O 设备，完成指定的 I/O 操作
+    \item 及时响应由控制器或通道发来的中断请求，并根据其中断类型调用相应的中断处理程序进行处理。
+    \item 对于设置有通道的计算机系统，驱动程序还应能够根据用户的 I/O 请求，自动地构成通道程序
+\end{itemize}
+
+% they also need to be checked.
+\section*{Other things}
+
+    \LaTeX \space code refer to these things and was complied on texlive2020.
+    \begin{itemize}
+        \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+        \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+        \item  \href{https://www.tablesgenerator.com/}{A free website helpful to generate \LaTeX \space table.}
+    \end{itemize}
+
+    Some description refer to \textit{Operating System Concepts 10th}, \href{https://en.wikipedia.org}{Wikipedia} 
+    and Professor.Tian's PPT.
+
+    Thanks for your correcting and grading :).
+
+\end{document}
