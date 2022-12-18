@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}  % need to compile twice
+\usepackage{amsmath, textcomp, amssymb, geometry, graphicx, enumerate, ctex, xcolor, float}
+\usepackage[colorlinks, linkcolor=black]{hyperref}
+\usepackage{listings}		% 为了避免与页眉的兼容问题可将listings放入table环境中
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \color{blue},          % 关键字风格
+    keywordstyle    =   [2] \color{teal},
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+    basicstyle          =   \zihao{-4}\ttfamily,
+    stringstyle         =   \color{magenta},
+    commentstyle        =   \color{red}\ttfamily,
+    breaklines          =   true,   % 自动换行，建议不要写太长的行
+    columns             =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+    basewidth           =   0.5em,
+}
+\geometry{left=2.54cm, right=2.54cm, top=3.18cm, bottom=3.18cm}
+
+\def\Name{杨豪\space}  % Your name
+\def\SID{2206213297}  % Your student ID number
+
+% need to be confirmed before each time writing and committing 
+\def\Homework{2} % Number of Homework
+\def\Session{2022-Fall}
+\def\CourseCodeName{SOFT500227: Computer Graphics}
+\def\simCourseName{CG}
+
+\title{\vspace{-4cm}\CourseCodeName \space
+        \Session \protect\\  Homework-\textbf{\Homework} Solutions}
+\author{软件2101 \Name \space 学号: \SID}
+\markright{\simCourseName\ \space \Session\  HW-\Homework\ \Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Honor Code: I promise that I finished the homework solutions on my own without copying other people's 
+    work.}
+
+\section*{第2章 光栅图形学}
+
+\subsection*{2.1 直线算法的实现与分析}
+
+\subsubsection*{DDA算法}
+
+\begin{lstlisting}[language = C]
+// DDA算法中需要大量用到 浮点数运算 和 分支判断，会大大减缓硬件速度
+void DDALine(int x0, int y0, int x1, int y1, Color color)
+{		
+	float dx = x1 - x0, dy = y1 - y0;
+    float k = dy / dx, y = y0;
+    if(k <= 1){
+        float y = y0;
+        for(int x = x0; x <= x1; x ++){
+            draw_pixel(x, (int)(y + 0.5), color);
+	        y += k;
+        }
+    }else{
+        float x = x0;
+        for(int y = y0; y <= y1; y ++){
+            draw_pixel(x, (int)(y + 0.5), color);		   
+	        x += 1 / k;
+        }
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{中点画线法}
+
+\begin{lstlisting}[language = C]
+// 中点画线法在增量算法的优化下速度大幅提升，
+// 且通过优化d0让算法完全在整数运算中实现，大大提高了运算速度
+void MidpointLine(int x0, int y0, int x1, int y1, Color color) {
+    int a = y0 - y1, b = x1 - x0, x = x0, y = y0;
+    int d0 = 2 * a + b, d1 = 2 * a, d2 = 2 * (a + b);
+    while(x <= x1) {
+        draw_pixel(x, y, color);
+        if(d0 < 0){
+            x ++, y ++, d += d2;  //右上方
+        }else{
+            x ++, d += d1;       //右方
+        }
+    }
+}
+\end{lstlisting}
+
+\subsubsection*{Bresenham算法}
+
+\begin{lstlisting}[language = C]
+// 比起中点画线法，Bresenham算法的推导过程简单易理解；
+// 且由于判断都是定性，同样可以通过优化初值让算法完全由整数运算构成
+void BresenhamLine(int x0, int y0, int x1, int y1, int color){
+    int dx = x1 - x0, dy = y1 - y0, x = x0, y = y0;
+    int e = -dx;
+    for(int i = 0; i <= dx; i++){
+        draw_pixel(x, y, color);
+        x ++, e += 2 * dy;
+        if(e >= 0){
+            y ++, e -= 2 * dx;
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection*{2.2 中点画圆法}
+
+\begin{lstlisting}[language = C]
+// sym_draw(int x, int y, Color color)函数依照八分对称性画出(x,y)的对称点
+void sym_draw(int x, int y, Color color) {
+	draw_pixel(x, y, color);
+	draw_pixel(y, x, color);
+	draw_pixel(-x, y, color);
+	draw_pixel(-y, x, color);
+	draw_pixel(x, -y, color);
+	draw_pixel(y, -x, color);
+	draw_pixel(-x, -y, color);
+	draw_pixel(-y, -x, color);
+}
+
+void MidPointCircle(int r, Color color){
+    int x, y, d;
+    int x = 0, y = r, e = 1 - r;            
+    sym_draw(x, y, color);             
+    while (x <= y) {                        // 到直线x=y结束
+        if(e < 0) e += 2 * x + 3;           // 右侧
+        else e += 2 * (x - y) + 5, y--;     // 右下
+        sym_draw(x ++, y, color);
+    }
+}
+\end{lstlisting}
+
+\section*{Other things}
+
+\LaTeX \space code refer to these things and was complied on texlive2020.
+\begin{itemize}
+    \item  \href{https://www.eecs70.org/assets/misc/homework_template.tex}{UCB-CS70's given homework template.} 
+    \item  \href{https://www.latexlive.com}{A free website useful to edit \LaTeX \space formula code.}
+\end{itemize}
+
+The purpose of writing in English is to adapt to bilingual teaching and to improve my poor English 
+writing skills in preparation for a possible future exchange program. 
+
+Thanks for your correcting and grading :).
+
+\end{document}
+
+ 
